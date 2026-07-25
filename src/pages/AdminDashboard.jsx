@@ -127,7 +127,7 @@ function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loadin
                   <td>{r.priority}</td>
                   <td><StatusBadge status={r.status} /></td>
                   <td>
-                    <div style={{ display: "flex", gap: 8 }}>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                       <select
                         value={assigning[r.id] || r.assignedTo || ""}
                         onChange={(e) => setAssigning({ ...assigning, [r.id]: e.target.value })}
