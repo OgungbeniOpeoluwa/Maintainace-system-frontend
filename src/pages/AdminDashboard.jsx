@@ -6,6 +6,7 @@ import {
 import api from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import { fileUrl } from "../utils";
 
 export default function AdminDashboard() {
   const [tab, setTab] = useState("requests");
@@ -113,6 +114,7 @@ function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loadin
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Evidence</th>
                 <th>Location</th>
                 <th>Priority</th>
                 <th>Status</th>
@@ -123,6 +125,15 @@ function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loadin
               {requests.map((r) => (
                 <tr key={r.id}>
                   <td>{r.title}</td>
+                  <td>
+                    {r.imageUrl ? (
+                      <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
+                        <img src={fileUrl(r.imageUrl)} alt="Evidence" className="table-thumb" />
+                      </a>
+                    ) : (
+                      <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>—</span>
+                    )}
+                  </td>
                   <td>{r.location}</td>
                   <td>{r.priority}</td>
                   <td><StatusBadge status={r.status} /></td>

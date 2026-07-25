@@ -6,7 +6,7 @@ import StatusBadge from "../components/StatusBadge";
 import PriorityChip from "../components/PriorityChip";
 import EmptyState from "../components/EmptyState";
 import TicketSkeleton from "../components/TicketSkeleton";
-import { ticketCode } from "../utils";
+import { ticketCode, fileUrl } from "../utils";
 
 export default function StudentDashboard() {
   const [requests, setRequests] = useState([]);
@@ -60,6 +60,11 @@ export default function StudentDashboard() {
             </div>
           </div>
           <div className="ticket-actions">
+            {r.imageUrl && (
+              <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
+                <img src={fileUrl(r.imageUrl)} alt="Evidence" className="ticket-thumb" />
+              </a>
+            )}
             <StatusBadge status={r.status} />
           </div>
         </div>

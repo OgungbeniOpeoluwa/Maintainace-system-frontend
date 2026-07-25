@@ -9,3 +9,11 @@ export function initials(fullName) {
   const parts = fullName.trim().split(/\s+/);
   return (parts[0]?.[0] || "").toUpperCase() + (parts[1]?.[0] || "").toUpperCase();
 }
+
+/** Turns a relative "/uploads/xyz.jpg" path from the API into a full, loadable URL. */
+export function fileUrl(path) {
+  if (!path) return null;
+  const apiBase = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+  const root = apiBase.replace(/\/api\/?$/, "");
+  return `${root}${path}`;
+}

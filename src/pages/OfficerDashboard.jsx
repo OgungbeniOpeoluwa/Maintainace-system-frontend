@@ -5,7 +5,7 @@ import StatusBadge from "../components/StatusBadge";
 import PriorityChip from "../components/PriorityChip";
 import EmptyState from "../components/EmptyState";
 import TicketSkeleton from "../components/TicketSkeleton";
-import { ticketCode } from "../utils";
+import { ticketCode, fileUrl } from "../utils";
 
 const NEXT_STATUS = {
   ASSIGNED: "IN_PROGRESS",
@@ -97,6 +97,11 @@ export default function OfficerDashboard() {
                 </div>
               </div>
               <div className="ticket-actions">
+                {r.imageUrl && (
+                  <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
+                    <img src={fileUrl(r.imageUrl)} alt="Evidence" className="ticket-thumb" />
+                  </a>
+                )}
                 <StatusBadge status={r.status} />
                 {NEXT_STATUS[r.status] && (
                   <button
@@ -130,6 +135,11 @@ export default function OfficerDashboard() {
                 </div>
               </div>
               <div className="ticket-actions">
+                {r.imageUrl && (
+                  <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
+                    <img src={fileUrl(r.imageUrl)} alt="Evidence" className="ticket-thumb" />
+                  </a>
+                )}
                 <button
                   className="btn-small"
                   style={{ background: "var(--blueprint)" }}
