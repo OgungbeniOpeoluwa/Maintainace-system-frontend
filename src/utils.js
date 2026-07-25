@@ -13,6 +13,7 @@ export function initials(fullName) {
 /** Turns a relative "/uploads/xyz.jpg" path from the API into a full, loadable URL. */
 export function fileUrl(path) {
   if (!path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
   const apiBase = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
   const root = apiBase.replace(/\/api\/?$/, "");
   return `${root}${path}`;
