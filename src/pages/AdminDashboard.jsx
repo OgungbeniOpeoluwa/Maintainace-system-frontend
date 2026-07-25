@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import {
   ClipboardList, Users, BarChart3, UserCog, Download,
-  CheckCircle2, AlertCircle, PackageOpen,
+  CheckCircle2, AlertCircle, PackageOpen, History,
 } from "lucide-react";
 import api from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import HistoryModal from "../components/HistoryModal";
 import { fileUrl } from "../utils";
 
 export default function AdminDashboard() {
@@ -89,6 +90,8 @@ export default function AdminDashboard() {
 }
 
 function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loading, assigning, setAssigning, handleAssign }) {
+  const [historyRequest, setHistoryRequest] = useState(null);
+
   const AssignControl = ({ r }) => (
     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
       <select
@@ -103,6 +106,14 @@ function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loadin
       </select>
       <button className="btn-small" style={{ background: "var(--blueprint)" }} onClick={() => handleAssign(r.id)}>
         Assign
+      </button>
+      <button
+        className="btn-small"
+        style={{ background: "var(--text-muted)" }}
+        onClick={() => setHistoryRequest(r)}
+        title="View history"
+      >
+        <History size={14} />
       </button>
     </div>
   );
@@ -185,6 +196,14 @@ function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loadin
             ))}
           </div>
         </>
+      )}
+
+      {historyRequest && (
+        <HistoryModal
+          requestId={historyRequest.id}
+          requestTitle={historyRequest.title}
+          onClose={() => setHistoryRequest(null)}
+        />
       )}
     </>
   );

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Plus, MapPin, Calendar, ClipboardList, Trash2 } from "lucide-react";
+import { Plus, MapPin, Calendar, ClipboardList, Trash2, History } from "lucide-react";
 import api from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
 import PriorityChip from "../components/PriorityChip";
 import EmptyState from "../components/EmptyState";
 import TicketSkeleton from "../components/TicketSkeleton";
 import WelcomeBanner from "../components/WelcomeBanner";
+import HistoryModal from "../components/HistoryModal";
 import { ticketCode, fileUrl } from "../utils";
 
 export default function StudentDashboard() {
@@ -14,6 +15,7 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState("");
+  const [historyRequest, setHistoryRequest] = useState(null);
 
   const load = () => {
     setLoading(true);
@@ -85,6 +87,14 @@ export default function StudentDashboard() {
               </a>
             )}
             <StatusBadge status={r.status} />
+            <button
+              className="btn-small"
+              style={{ background: "var(--text-muted)" }}
+              onClick={() => setHistoryRequest(r)}
+              title="View history"
+            >
+              <History size={14} />
+            </button>
             {r.status === "PENDING" && (
               <button
                 className="btn-small"
@@ -99,6 +109,14 @@ export default function StudentDashboard() {
           </div>
         </div>
       ))}
+
+      {historyRequest && (
+        <HistoryModal
+          requestId={historyRequest.id}
+          requestTitle={historyRequest.title}
+          onClose={() => setHistoryRequest(null)}
+        />
+      )}
     </div>
   );
 }

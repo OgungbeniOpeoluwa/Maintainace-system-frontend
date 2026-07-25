@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { MapPin, Calendar, Inbox, PackageSearch, AlertCircle } from "lucide-react";
+import { MapPin, Calendar, Inbox, PackageSearch, AlertCircle, History } from "lucide-react";
 import api from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
 import PriorityChip from "../components/PriorityChip";
 import EmptyState from "../components/EmptyState";
 import TicketSkeleton from "../components/TicketSkeleton";
+import HistoryModal from "../components/HistoryModal";
 import { ticketCode, fileUrl } from "../utils";
 
 const NEXT_STATUS = {
@@ -19,6 +20,7 @@ export default function OfficerDashboard() {
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState(null);
   const [error, setError] = useState("");
+  const [historyRequest, setHistoryRequest] = useState(null);
 
   const load = () => {
     setLoading(true);
@@ -103,6 +105,14 @@ export default function OfficerDashboard() {
                   </a>
                 )}
                 <StatusBadge status={r.status} />
+                <button
+                  className="btn-small"
+                  style={{ background: "var(--text-muted)" }}
+                  onClick={() => setHistoryRequest(r)}
+                  title="View history"
+                >
+                  <History size={14} />
+                </button>
                 {NEXT_STATUS[r.status] && (
                   <button
                     className="btn-small"
@@ -152,6 +162,14 @@ export default function OfficerDashboard() {
             </div>
           ))
         )
+      )}
+
+      {historyRequest && (
+        <HistoryModal
+          requestId={historyRequest.id}
+          requestTitle={historyRequest.title}
+          onClose={() => setHistoryRequest(null)}
+        />
       )}
     </div>
   );
