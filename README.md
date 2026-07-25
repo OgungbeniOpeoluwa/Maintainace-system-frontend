@@ -2,7 +2,19 @@
 
 React (Vite) single-page app for the University Maintenance Request Management System — the student-facing web interface for MIT 8333 (Advanced Web Application Development).
 
-This is the **frontend only**. The backend (Spring Boot REST API) lives in a separate repository: **[link your backend repo here]**.
+This is the **frontend only**. The backend (Spring Boot REST API) lives in a separate repository: **https://github.com/OgungbeniOpeoluwa/Maintainace_system**.
+
+---
+
+## Live
+
+- **App**: https://maintainace-system-frontend.vercel.app
+- **API**: https://maintainace-system.onrender.com
+- **Swagger UI**: https://maintainace-system.onrender.com/swagger-ui.html
+
+**Test login** — Admin: `admin@miva.university` / `Admin@123`. Student/Staff accounts can be created via the Register page.
+
+The backend runs on Render's free tier and sleeps after inactivity — the first request after idle time may take 30–60 seconds.
 
 ---
 
@@ -54,8 +66,8 @@ Opens on **http://localhost:5173**.
 
 ### Environment variable
 
-| Variable       | Description                                   | Example                                                                                   |
-| -------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Variable | Description | Example |
+|---|---|---|
 | `VITE_API_URL` | Base URL of the backend API, including `/api` | `http://localhost:8080/api` (local) or `https://your-backend.onrender.com/api` (deployed) |
 
 ⚠️ Vite bakes environment variables in at **build time**, not runtime. If you change `VITE_API_URL` after already building/deploying, you must rebuild — just saving the variable isn't enough.
@@ -77,12 +89,12 @@ npm test          # run the Vitest test suite
 
 Run with `npm test`. Covers:
 
-| Test File               | Covers                                                                                   |
-| ----------------------- | ---------------------------------------------------------------------------------------- |
-| `StatusBadge.test.jsx`  | Correct label rendered for each request status                                           |
-| `PriorityChip.test.jsx` | Correct label rendered for each priority level                                           |
-| `utils.test.js`         | Ticket-code formatting, name-initials helper, and the Cloudinary-vs-local-disk URL logic |
-| `PrivateRoute.test.jsx` | Unauthenticated users redirect to login; role-restricted routes allow/deny correctly     |
+| Test File | Covers |
+|---|---|
+| `StatusBadge.test.jsx` | Correct label rendered for each request status |
+| `PriorityChip.test.jsx` | Correct label rendered for each priority level |
+| `utils.test.js` | Ticket-code formatting, name-initials helper, and the Cloudinary-vs-local-disk URL logic |
+| `PrivateRoute.test.jsx` | Unauthenticated users redirect to login; role-restricted routes allow/deny correctly |
 
 No backend connection is required — all API calls are mocked.
 
@@ -96,9 +108,7 @@ No backend connection is required — all API calls are mocked.
 4. Deploy.
 
 ### ⚠️ Required: `vercel.json` (already included)
-
-Without it, directly loading or refreshing any client-side route (`/login`, `/register/staff`, `/my-requests`, etc.) returns a `404: NOT_FOUND` from Vercel — because no actual file exists at that path; only React Router, running inside `index.html`, knows how to handle it. This file tells Vercel to serve `index.html` for every path and let React Router take over:
-
+Without it, directly loading or refreshing any client-side route (`/login`, `/register/staff`, `/my-requests`, etc.) returns a `404: NOT_FOUND` from Vercel,because no actual file exists at that path; only React Router, running inside `index.html`, knows how to handle it. This file tells Vercel to serve `index.html` for every path and let React Router take over:
 ```json
 {
   "rewrites": [
@@ -108,18 +118,17 @@ Without it, directly loading or refreshing any client-side route (`/login`, `/re
 ```
 
 ### CORS
-
 The backend must have this app's deployed URL in its `CORS_ORIGINS` environment variable, or every API request will be blocked by the browser. See the backend repo's README for that setting.
 
 ---
 
 ## 8. Roles & What Each Dashboard Shows
 
-| Role    | Dashboard                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------------- |
-| Student | Submit/track/delete (while pending) their own requests                                                          |
-| Staff   | Same as Student, plus a **Department Requests** tab (read-only view of everyone's requests in their department) |
-| Officer | **Assigned to Me** and **Available in My Category** (self-claim) tabs                                           |
-| Admin   | **All Requests**, **Manage Officers**, **All Users**, **Reports** tabs                                          |
+| Role | Dashboard |
+|---|---|
+| Student | Submit/track/delete (while pending) their own requests |
+| Staff | Same as Student, plus a **Department Requests** tab (read-only view of everyone's requests in their department) |
+| Officer | **Assigned to Me** and **Available in My Category** (self-claim) tabs |
+| Admin | **All Requests**, **Manage Officers**, **All Users**, **Reports** tabs |
 
-Registration starts at a role-selection page ("Are you a Student or Staff?") before showing the matching form. Officer and Admin accounts are not self-registered — see the backend README for how those are created.
+Registration starts at a role-selection page ("Are you a Student or Staff?") before showing the matching form. Officer and Admin accounts are not self-registered,see the backend README for how those are created.
