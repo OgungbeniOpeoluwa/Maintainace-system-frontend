@@ -311,6 +311,30 @@
   .auth-card h2 { margin-top: 0; font-size: 1.4rem; }
   .auth-card .sub { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; }
   
+  .role-choice-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-card);
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .role-choice-card:hover {
+    border-color: var(--blueprint);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .role-choice-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .role-choice-title { display: block; font-weight: 700; color: var(--ink); font-size: 0.98rem; }
+  .role-choice-desc { display: block; font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+  
   /* ============================================================
      Forms
      ============================================================ */
@@ -424,6 +448,7 @@
   }
   .ticket-meta span { display: flex; align-items: center; gap: 4px; }
   .ticket-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  
   .ticket-thumb {
     width: 44px; height: 44px;
     border-radius: var(--radius-sm);
@@ -633,6 +658,41 @@
     100% { background-position: 0 50%; }
   }
   .skeleton-ticket { height: 74px; margin-bottom: 14px; }
+  
+  .welcome-banner {
+    position: relative;
+    border-left: 4px solid var(--amber);
+    background: linear-gradient(135deg, var(--paper-card) 0%, #FCF7EC 100%);
+  }
+  .welcome-dismiss {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .welcome-dismiss:hover { background: rgba(0,0,0,0.06); color: var(--ink); }
+  
+  .welcome-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+  }
+  .welcome-step { display: flex; gap: 10px; align-items: flex-start; }
+  .welcome-step-icon {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    background: var(--info-bg);
+    color: var(--blueprint);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .welcome-step strong { display: block; font-size: 0.88rem; color: var(--ink); margin-bottom: 3px; }
+  .welcome-step p { margin: 0; font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
   
   /* Checkbox chips (category selection) */
   .chip-checkbox {

@@ -3,8 +3,10 @@ import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
+import RoleSelect from "./pages/RoleSelect";
 import Register from "./pages/Register";
 import StudentDashboard from "./pages/StudentDashboard";
+import StaffDashboard from "./pages/StaffDashboard";
 import OfficerDashboard from "./pages/OfficerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import SubmitRequest from "./pages/SubmitRequest";
@@ -15,6 +17,7 @@ function Home() {
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === "ADMIN") return <AdminDashboard />;
   if (user.role === "OFFICER") return <OfficerDashboard />;
+  if (user.role === "STAFF") return <StaffDashboard />;
   return <StudentDashboard />;
 }
 
@@ -36,7 +39,9 @@ export default function App() {
       {user && <Navbar />}
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-        <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+        <Route path="/register" element={user ? <Navigate to="/" /> : <RoleSelect />} />
+        <Route path="/register/student" element={user ? <Navigate to="/" /> : <Register role="STUDENT" />} />
+        <Route path="/register/staff" element={user ? <Navigate to="/" /> : <Register role="STAFF" />} />
         <Route
           path="/change-password"
           element={
@@ -58,7 +63,7 @@ export default function App() {
         <Route
           path="/submit-request"
           element={
-            <PrivateRoute allowedRoles={["STUDENT"]}>
+            <PrivateRoute allowedRoles={["STUDENT", "STAFF"]}>
               <ForcePasswordChangeGate>
                 <SubmitRequest />
               </ForcePasswordChangeGate>
@@ -68,9 +73,9 @@ export default function App() {
         <Route
           path="/my-requests"
           element={
-            <PrivateRoute allowedRoles={["STUDENT"]}>
+            <PrivateRoute allowedRoles={["STUDENT", "STAFF"]}>
               <ForcePasswordChangeGate>
-                <StudentDashboard />
+                <Home />
               </ForcePasswordChangeGate>
             </PrivateRoute>
           }

@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Plus, MapPin, Calendar, ClipboardList } from "lucide-react";
+import { Plus, MapPin, Calendar, ClipboardList, Trash2 } from "lucide-react";
 import api from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
 import PriorityChip from "../components/PriorityChip";
 import EmptyState from "../components/EmptyState";
 import TicketSkeleton from "../components/TicketSkeleton";
+import WelcomeBanner from "../components/WelcomeBanner";
 import { ticketCode, fileUrl } from "../utils";
 
 export default function StudentDashboard() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
+  const [error, setError] = useState("");
 
   const load = () => {
     setLoading(true);
@@ -21,8 +24,23 @@ export default function StudentDashboard() {
 
   useEffect(() => { load(); }, []);
 
+  const handleDelete = async (req) => {
+    if (!window.confirm(`Delete "${req.title}"? This can't be undone.`)) return;
+    setDeletingId(req.id);
+    setError("");
+    try {
+      await api.delete(`/requests/${req.id}`);
+      load();
+    } catch (err) {
+      setError(err.response?.data?.message || "Could not delete this request.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="container">
+      <WelcomeBanner variant="student" />
       <div className="toolbar">
         <div className="page-header" style={{ marginBottom: 0 }}>
           <span className="eyebrow">Your Requests</span>
@@ -33,6 +51,7 @@ export default function StudentDashboard() {
         </Link>
       </div>
 
+      {error && <div className="error-msg">{error}</div>}
       {loading && <TicketSkeleton count={3} />}
 
       {!loading && requests.length === 0 && (
@@ -66,6 +85,17 @@ export default function StudentDashboard() {
               </a>
             )}
             <StatusBadge status={r.status} />
+            {r.status === "PENDING" && (
+              <button
+                className="btn-small"
+                style={{ background: "var(--danger)" }}
+                disabled={deletingId === r.id}
+                onClick={() => handleDelete(r)}
+                title="Delete this request"
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
           </div>
         </div>
       ))}
