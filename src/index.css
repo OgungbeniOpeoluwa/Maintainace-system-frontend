@@ -229,6 +229,62 @@
   }
   
   /* ============================================================
+     History modal (audit trail)
+     ============================================================ */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(19, 35, 58, 0.55);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    z-index: 100;
+    animation: slide-in 0.15s ease-out;
+  }
+  .modal-panel {
+    background: var(--paper-card);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    max-width: 460px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lift);
+  }
+  .modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 4px;
+  }
+  .modal-close {
+    background: transparent; border: none; cursor: pointer;
+    color: var(--text-muted); padding: 4px; border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.06); color: var(--ink); }
+  
+  .timeline { margin-top: 18px; position: relative; }
+  .timeline-item {
+    display: flex; gap: 12px;
+    padding-bottom: 20px;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 5px; top: 16px; bottom: 0;
+    width: 2px;
+    background: var(--line);
+  }
+  .timeline-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--blueprint);
+    border: 2px solid var(--paper-card);
+    box-shadow: 0 0 0 2px var(--blueprint);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .timeline-content { flex: 1; }
+  
+  /* ============================================================
      Layout helpers
      ============================================================ */
   .container { max-width: 1080px; margin: 0 auto; padding: 32px 20px 60px; }
