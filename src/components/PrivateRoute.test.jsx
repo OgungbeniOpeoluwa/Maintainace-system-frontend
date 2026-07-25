@@ -41,7 +41,7 @@ describe("PrivateRoute", () => {
   });
 
   it("redirects home when the user's role is not in the allowed list", () => {
-    useAuth.mockReturnValue({ user: { role: "STUDENT_STAFF" } });
+    useAuth.mockReturnValue({ user: { role: "STUDENT" } });
     renderAt("/protected", ["ADMIN"]);
     expect(screen.getByText("Home Page")).toBeInTheDocument();
   });

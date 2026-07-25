@@ -299,7 +299,7 @@ function UsersTab() {
         <h3 style={{ margin: 0, fontSize: "1.1rem" }}>All Users</h3>
         <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)} style={{ padding: "8px 12px", borderRadius: 6, border: "1.5px solid var(--line)" }}>
           <option value="">All roles</option>
-          <option value="STUDENT_STAFF">Student / Staff</option>
+          <option value="STUDENT">Student / Staff</option>
           <option value="OFFICER">Maintenance Officer</option>
           <option value="ADMIN">Administrator</option>
         </select>
@@ -393,7 +393,7 @@ function ReportsTab() {
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 26 }}>
         <SummaryCard label="Total Requests" value={summary.totalRequests} color="var(--blueprint)" />
         <SummaryCard label="Total Users" value={summary.totalUsers} color="var(--ink)" />
-        <SummaryCard label="Students / Staff" value={summary.totalStudents} color="var(--info)" />
+        <SummaryCard label="Students" value={summary.totalStudents} color="var(--info)" />
         <SummaryCard label="Officers" value={summary.totalOfficers} color="var(--amber-dark)" />
         <SummaryCard label="Admins" value={summary.totalAdmins} color="var(--success)" />
       </div>

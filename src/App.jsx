@@ -58,7 +58,7 @@ export default function App() {
         <Route
           path="/submit-request"
           element={
-            <PrivateRoute allowedRoles={["STUDENT_STAFF"]}>
+            <PrivateRoute allowedRoles={["STUDENT"]}>
               <ForcePasswordChangeGate>
                 <SubmitRequest />
               </ForcePasswordChangeGate>
@@ -68,7 +68,7 @@ export default function App() {
         <Route
           path="/my-requests"
           element={
-            <PrivateRoute allowedRoles={["STUDENT_STAFF"]}>
+            <PrivateRoute allowedRoles={["STUDENT"]}>
               <ForcePasswordChangeGate>
                 <StudentDashboard />
               </ForcePasswordChangeGate>
