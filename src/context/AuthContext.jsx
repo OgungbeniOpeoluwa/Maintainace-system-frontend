@@ -15,12 +15,13 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const register = async (fullName, email, password, department) => {
+  const register = async (fullName, email, password, department, role) => {
     const { data } = await api.post("/auth/register", {
       fullName,
       email,
       password,
       department,
+      role,
     });
     persist(data);
     return data;
