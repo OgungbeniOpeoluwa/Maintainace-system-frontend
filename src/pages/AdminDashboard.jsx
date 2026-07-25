@@ -89,6 +89,24 @@ export default function AdminDashboard() {
 }
 
 function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loading, assigning, setAssigning, handleAssign }) {
+  const AssignControl = ({ r }) => (
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <select
+        value={assigning[r.id] || r.assignedTo || ""}
+        onChange={(e) => setAssigning({ ...assigning, [r.id]: e.target.value })}
+        style={{ padding: "6px 8px", borderRadius: 6, border: "1.5px solid var(--line)" }}
+      >
+        <option value="">Select officer</option>
+        {officers.map((o) => (
+          <option key={o.id} value={o.id}>{o.fullName}</option>
+        ))}
+      </select>
+      <button className="btn-small" style={{ background: "var(--blueprint)" }} onClick={() => handleAssign(r.id)}>
+        Assign
+      </button>
+    </div>
+  );
+
   return (
     <>
       <div className="toolbar">
@@ -109,56 +127,64 @@ function RequestsTab({ requests, officers, statusFilter, setStatusFilter, loadin
       )}
 
       {!loading && requests.length > 0 && (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Evidence</th>
-                <th>Location</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Assign to Officer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requests.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.title}</td>
-                  <td>
-                    {r.imageUrl ? (
-                      <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
-                        <img src={fileUrl(r.imageUrl)} alt="Evidence" className="table-thumb" />
-                      </a>
-                    ) : (
-                      <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>—</span>
-                    )}
-                  </td>
-                  <td>{r.location}</td>
-                  <td>{r.priority}</td>
-                  <td><StatusBadge status={r.status} /></td>
-                  <td>
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                      <select
-                        value={assigning[r.id] || r.assignedTo || ""}
-                        onChange={(e) => setAssigning({ ...assigning, [r.id]: e.target.value })}
-                        style={{ padding: "6px 8px", borderRadius: 6, border: "1.5px solid var(--line)" }}
-                      >
-                        <option value="">Select officer</option>
-                        {officers.map((o) => (
-                          <option key={o.id} value={o.id}>{o.fullName}</option>
-                        ))}
-                      </select>
-                      <button className="btn-small" style={{ background: "var(--blueprint)" }} onClick={() => handleAssign(r.id)}>
-                        Assign
-                      </button>
-                    </div>
-                  </td>
+        <>
+          {/* Desktop: dense table */}
+          <div className="table-wrap desktop-only">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Evidence</th>
+                  <th>Location</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Assign to Officer</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {requests.map((r) => (
+                  <tr key={r.id}>
+                    <td>{r.title}</td>
+                    <td>
+                      {r.imageUrl ? (
+                        <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
+                          <img src={fileUrl(r.imageUrl)} alt="Evidence" className="table-thumb" />
+                        </a>
+                      ) : (
+                        <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>—</span>
+                      )}
+                    </td>
+                    <td>{r.location}</td>
+                    <td>{r.priority}</td>
+                    <td><StatusBadge status={r.status} /></td>
+                    <td><AssignControl r={r} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile: cards, so the assign control is never hidden off-screen */}
+          <div className="mobile-only">
+            {requests.map((r) => (
+              <div key={r.id} className="card" style={{ marginBottom: 14 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, marginBottom: 4 }}>{r.title}</div>
+                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>{r.location} · {r.priority}</div>
+                  </div>
+                  {r.imageUrl && (
+                    <a href={fileUrl(r.imageUrl)} target="_blank" rel="noreferrer">
+                      <img src={fileUrl(r.imageUrl)} alt="Evidence" className="table-thumb" />
+                    </a>
+                  )}
+                </div>
+                <div style={{ marginBottom: 10 }}><StatusBadge status={r.status} /></div>
+                <AssignControl r={r} />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </>
   );
@@ -300,6 +326,7 @@ function UsersTab() {
         <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)} style={{ padding: "8px 12px", borderRadius: 6, border: "1.5px solid var(--line)" }}>
           <option value="">All roles</option>
           <option value="STUDENT">Student</option>
+          <option value="STAFF">Staff</option>
           <option value="OFFICER">Maintenance Officer</option>
           <option value="ADMIN">Administrator</option>
         </select>
@@ -394,6 +421,7 @@ function ReportsTab() {
         <SummaryCard label="Total Requests" value={summary.totalRequests} color="var(--blueprint)" />
         <SummaryCard label="Total Users" value={summary.totalUsers} color="var(--ink)" />
         <SummaryCard label="Students" value={summary.totalStudents} color="var(--info)" />
+        <SummaryCard label="Staff" value={summary.totalStaff} color="var(--info)" />
         <SummaryCard label="Officers" value={summary.totalOfficers} color="var(--amber-dark)" />
         <SummaryCard label="Admins" value={summary.totalAdmins} color="var(--success)" />
       </div>

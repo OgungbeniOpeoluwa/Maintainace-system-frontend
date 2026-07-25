@@ -88,7 +88,7 @@ export default function Register({ role }) {
                 value={form.department}
                 onChange={handleChange}
                 required={role === "STAFF"}
-                placeholder={role === "STAFF" ? "e.g. Facilities, Computer Science" : "e.g. Hostel Block C"}
+                placeholder={role === "STAFF" ? "e.g. Facilities, Computer Science" : "e.g. Computer Science"}
               />
               {role === "STAFF" && (
                 <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: 6 }}>

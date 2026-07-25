@@ -221,6 +221,13 @@
     .stat-card { flex: 1 1 45%; }
   }
   
+  /* Dual layout: table on desktop, cards on mobile (a table's last column is easy to miss on a phone) */
+  .mobile-only { display: none; }
+  @media (max-width: 768px) {
+    .desktop-only { display: none; }
+    .mobile-only { display: block; }
+  }
+  
   /* ============================================================
      Layout helpers
      ============================================================ */
